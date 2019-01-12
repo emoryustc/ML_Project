@@ -4,7 +4,7 @@ import numpy as np
 
 seed = 2018
 np.random.seed(seed)
-dataset = np.loadtxt('/home/arjun/PycharmProjects/ML_proj/dataset/train.csv', dtype=str, delimiter=",")
+dataset = np.loadtxt('../dataset/train.csv', dtype=str, delimiter=",")
 # print(dataset[:,3])
 # %%
 # Creating the required fields in the dataset
