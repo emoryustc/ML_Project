@@ -2,14 +2,8 @@
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib
-from matplotlib import gridspec
-
-matplotlib.rcParams.update({'font.size': 12})
 
 df = pd.read_csv('../dataset/train.csv', sep=',')
-
 feature = 'Breed'
 
 feature_values_dog = df.loc[df['AnimalType'] == 'Dog', feature]
@@ -61,6 +55,7 @@ breeds = ['Blue Lacy', 'Queensland Heeler', 'Rhod Ridgeback', 'Retriever', 'Chin
           'Tibetan Mastiff', 'Tibetan Spaniel', 'Tibetan Terrier', 'Toy Fox Terrier', 'Treeing Walker Coonhound',
           'Vizsla', 'Weimaraner', 'Welsh Springer Spaniel', 'Welsh Terrier', 'West Highland White Terrier', 'Whippet',
           'Wire Fox Terrier', 'Wirehaired Pointing Griffon', 'Wirehaired Vizsla', 'Xoloitzcuintli', 'Yorkshire Terrier']
+
 groups = ['Herding', 'Herding', 'Hound', 'Sporting', 'Non-Sporting', 'Herding', 'Herding', 'Terrier', 'Toy', 'Hound',
           'Terrier', 'Working', 'Working', 'Working', 'Non-Sporting', 'Non-Sporting', 'Hound', 'Non-Sporting',
           'Non-Sporting', 'Toy', 'Hound', 'Terrier', 'Terrier', 'Sporting', 'Working', 'Herding', 'Herding', 'Terrier',
@@ -87,8 +82,10 @@ groups = ['Herding', 'Herding', 'Hound', 'Sporting', 'Non-Sporting', 'Herding', 
 breeds_group = np.array([breeds, groups]).T
 dog_groups = np.unique(breeds_group[:, 1])
 
-# Convert the breed string into group lists
+# print(breeds_group)
+# print(dog_groups)
 
+# Convert the breed string into group lists
 group_values_dog = []
 count = 0
 not_found = []
@@ -107,11 +104,14 @@ for i in feature_values_dog:
     i = i.replace(' Coat', '')
 
     groups = []
+
     if '/' in i:
         split_i = i.split('/')
+
         for j in split_i:
             if j[-3:] == 'Mix':
                 breed = j[:-4]
+
                 if breed in breeds_group[:, 0]:
                     indx = np.where(breeds_group[:, 0] == breed)[0]
                     groups.append(breeds_group[indx, 1][0])
@@ -145,8 +145,8 @@ for i in feature_values_dog:
                 else:
                     not_found.append(j)
                     groups.append('Unknown')
-    else:
 
+    else:
         if i[-3:] == 'Mix':
             breed = i[:-4]
             if breed in breeds_group[:, 0]:
@@ -185,110 +185,10 @@ for i in feature_values_dog:
                 not_found.append(i)
     group_values_dog.append(list(set(groups)))
 
-not_f_unique, counts = np.unique(not_found, return_counts=True)
+print(group_values_dog)
 
-unique_groups, counts = np.unique(group_values_dog, return_counts=True)
+not_f_unique, counts_1 = np.unique(not_found, return_counts=True)
+unique_groups, counts_2 = np.unique(group_values_dog, return_counts=True)
 
 # add mix, pit bull, and unknown to the groups
 groups = np.unique(np.append(dog_groups, ['Mix', 'Pit Bull', 'Unknown']))
-
-# Calculate rates of different outcomes
-
-outcome_contours = np.zeros([len(unique_outcomes), len(groups), len(groups)])
-outcome_counts = np.zeros([len(unique_outcomes), len(groups), len(groups)])
-
-for i in range(len(groups)):
-    for j in range(i + 1):
-        if i == j:
-            denominator = group_values_dog.count([groups[i]])
-            indices = [k for k, x in enumerate(group_values_dog) if x == [groups[i]]]
-
-            sublist = [outcome_dog[ind] for ind in indices]
-
-            for k in range(len(unique_outcomes)):
-                numerator = sublist.count(unique_outcomes[k])
-                outcome_counts[k, i, j] = denominator
-                if denominator > 0:
-                    outcome_contours[k, i, j] = 1e0 * numerator / denominator
-                else:
-                    outcome_contours[k, i, j] = 0e0
-
-        else:
-            denominator = group_values_dog.count([groups[i], groups[j]])
-            denominator += group_values_dog.count([groups[j], groups[i]])
-            indices = [k for k, x in enumerate(group_values_dog) if x == [groups[i], groups[j]]]
-            indices += [k for k, x in enumerate(group_values_dog) if x == [groups[j], groups[i]]]
-
-            sublist = [outcome_dog[ind] for ind in indices]
-
-            for k in range(len(unique_outcomes)):
-                numerator = sublist.count(unique_outcomes[k])
-                outcome_counts[k, i, j] = denominator
-                outcome_counts[k, j, i] = denominator
-                if denominator > 0:
-                    outcome_contours[k, i, j] = 1e0 * numerator / denominator
-                    outcome_contours[k, j, i] = 1e0 * numerator / denominator
-                else:
-                    outcome_contours[k, i, j] = 0e0
-                    outcome_contours[k, j, i] = 0e0
-
-# First plot on adoption rates
-
-avg_adoption = np.average(outcome_contours[0, :, :], weights=outcome_counts[0, :, :])
-avg_adoption_group = np.average(outcome_contours[0, :, :], weights=outcome_counts[0, :, :], axis=0)
-arg_sort = np.argsort(avg_adoption_group)
-avg_count = np.sum(outcome_counts[0, :, :], axis=0)
-
-plt.figure(figsize=(6, 6))
-
-plt.subplot(2, 1, 1)
-plt.xlim([-0.5, len(groups) - 0.5])
-plt.yscale('log')
-plt2, = plt.plot(avg_count[arg_sort], '+', mew=2, markersize=10)
-plt.ylabel('log10( nr. of dogs )')
-plt.xticks(range(len(groups)), '')
-
-plt.subplot(2, 1, 2)
-plt.xlim([-0.5, len(groups) - 0.5])
-plt.xlabel('Groups')
-plt.ylabel('Adoption rate')
-plt2, = plt.plot(avg_adoption_group[arg_sort], '+', mew=2, markersize=10)
-plt1, = plt.plot(np.arange(-1, len(groups) + 1), np.zeros(len(groups) + 2) + avg_adoption)
-plt.legend([plt1, plt2], ['total average adoption rate', 'adoption rate per group'], loc=4)
-plt.xticks(range(len(groups)), groups[arg_sort], rotation='vertical')
-plt.tight_layout()
-plt.savefig('groups-vs-adoption.jpg', dpi=150)
-plt.show()
-plt.close()
-
-# Second plot on adoption rates
-
-plt.figure(figsize=(10, 6))
-gs = gridspec.GridSpec(1, 2, width_ratios=[1.45, 1])
-
-plt.subplot(gs[0])
-plt.title('Adoption rate')
-ax1 = plt.imshow(np.ma.masked_array(outcome_contours[0, :, :], (outcome_contours[0, :, :] >= avg_adoption)),
-                 interpolation='nearest', cmap='Blues_r')
-cb1 = plt.colorbar(ax1, shrink=.5, pad=.15, aspect=15)
-cb1.set_label('Below average adoption rates')
-ax2 = plt.imshow(np.ma.masked_array(outcome_contours[0, :, :], (outcome_contours[0, :, :] < avg_adoption)),
-                 interpolation='nearest', cmap='Reds')
-cb2 = plt.colorbar(ax2, shrink=.5, aspect=15)
-cb2.set_label('Above average adoption rates')
-plt.xticks(range(len(groups)), groups, rotation='vertical')
-plt.yticks(range(len(groups)), groups)
-
-plt.subplot(gs[1])
-
-outcome_counts[0, :, :][outcome_counts[0, :, :] == 0] = 0.1
-plt.title('Nr. of dogs')
-plt.imshow(np.log10(outcome_counts[0, :, :]), interpolation='nearest', cmap='afmhot', vmin=0e0)
-plt.xticks(range(len(groups)), groups, rotation='vertical')
-plt.yticks(range(len(groups)), groups)
-cb3 = plt.colorbar(shrink=.5, aspect=15)
-cb3.set_label('log10( nr. of dogs )')
-plt.tight_layout()
-plt.savefig('groups-vs-adoption_grid.jpg', dpi=150)
-plt.show()
-plt.close()
