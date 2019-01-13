@@ -5,7 +5,7 @@ import numpy as np
 
 
 def breeder():
-    df = pd.read_csv('/home/arjun/PycharmProjects/ML_proj/dataset/train.csv', sep=',')
+    df = pd.read_csv('../dataset/train.csv', sep=',')
     feature = 'Breed'
 
     feature_values_dog = df.loc[df['AnimalType'] == 'Dog', feature]

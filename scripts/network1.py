@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 
 # %% Preparing the dataset and the putput label
-dataset = np.loadtxt('/home/arjun/PycharmProjects/ML_proj/dataset/train.csv', dtype=str, delimiter=",")
+dataset = np.loadtxt('../dataset/train.csv', dtype=str, delimiter=",")
 dataset, outcome = prgm1.preprocessing(dataset)
 partition = np.round(0.8 * dataset.shape[0]).__int__()
 train_set = dataset[0:partition, :]
