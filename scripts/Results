@@ -1,0 +1,5 @@
+Random forest:          44%
+SVM:                    50%
+Decision tree:          43%
+KNN:                    41%
+XGB:                    53%
