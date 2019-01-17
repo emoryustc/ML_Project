@@ -3,3 +3,5 @@ SVM:                    50%
 Decision tree:          43%
 KNN:                    41%
 XGB:                    53%
+Logistic regression:    49%
+

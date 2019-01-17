@@ -22,4 +22,4 @@ for i in range(outcome.shape[0]):
     elif outcome[i] == 4:
         new_outcome[i, 4] = 1
 
-np.save('outcome_ohv_r5.npy', outcome)
+np.save('outcome_ohv_r5.npy', new_outcome)

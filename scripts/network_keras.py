@@ -8,7 +8,7 @@ import numpy as np
 # the data, shuffled and split between train and test sets
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 train_data = np.load('dataset.npy')
-value_data = np.load('outcome_ohv.npy')
+value_data = np.load('outcome_ohv_r5.npy')
 print(train_data.shape)
 print(value_data.shape)
 
@@ -19,7 +19,7 @@ output_dim = nb_classes = 5
 model = Sequential()
 model.add(Dense(output_dim, input_dim=input_dim, activation='softmax'))
 batch_size = 128
-nb_epoch = 20
+nb_epoch = 100
 
 model.compile(optimizer='sgd', loss='categorical_crossentropy', metrics=['accuracy'])
 history = model.fit(train_data[:10000], value_data[:10000], batch_size=batch_size, nb_epoch=nb_epoch, verbose=1,
