@@ -3,23 +3,46 @@ from scripts import breed_processing
 import numpy as np
 from sklearn.preprocessing import normalize
 
-def preprocessing(dataset):
+seed = 2018
+np.random.seed(seed)
+dataset = np.loadtxt('../dataset/train.csv', dtype=str, delimiter=",")
+# print(dataset[:,3])
+# %%
+# Creating the required fields in the dataset
+data = dataset[1:, 0:4]
+data = np.hstack((data, dataset[1:, 5:]))
+# print (data)
+dog_data = np.empty((9,), str)
+cat_data = np.empty((9,), str)
+# dog dataset
+for row in data[1:, :]:
+    # print (row)
+    if row[4] == "Dog":
+        dog_data = np.vstack((dog_data, row))
+    elif row[4] == "Cat":
+        cat_data = np.vstack((cat_data, row))
+# %%
+dog_data = dog_data[1:, :]
+cat_data = cat_data[1:, :]
+# Adding gender field and neutered field
+dog_data = np.hstack((dog_data, np.ones((dog_data.shape[0], 2), int)))
+cat_data = np.hstack((cat_data, np.ones((cat_data.shape[0], 2), int)))
 
-    # print(dataset[:,3])
-    # %%
-    # Creating the required fields in the dataset
-    data = dataset[1:, 0:4]
-    data = np.hstack((data, dataset[1:, 5:]))
-    # print (data)
-    dog_data = np.empty((9,), str)
-    cat_data = np.empty((9,), str)
-    # dog dataset
-    for row in data[1:, :]:
-        # print (row)
-        if row[4] == "Dog":
-            dog_data = np.vstack((dog_data, row))
-        elif row[4] == "Cat":
-            cat_data = np.vstack((cat_data, row))
+# %%
+counter = 0
+for i in dog_data[:, :]:
+    if "Female" in i[5]:
+        dog_data[counter, 9] = 0
+    if "Neutered" in i[5]:
+        dog_data[counter, 10] = 0
+    counter += 1
+counter = 0
+for i in cat_data[:, :-1]:
+    if "Female" in i[5]:
+        cat_data[counter, 9] = 0
+    if "Neutered" in i[5]:
+        cat_data[counter, 10] = 0
+    counter += 1
 
     print(dog_data)
     # %%
@@ -71,16 +94,12 @@ def preprocessing(dataset):
 
     target_dog = dog_data[:, 3]
     print(target_dog)
-    vector = {'Adoption': 16.0
-        , 'Died': 8.0
-        , 'Euthanasia': 4.0
-        , 'Return_to_owner': 2.0
-        , 'Transfer': 1.0}
+    vector = {'Adoption': 16
+        , 'Died': 8
+        , 'Euthanasia': 4
+        , 'Return_to_owner': 2
+        , 'Transfer': 1}
     integer_encoded_dog = [vector[str] for str in target_dog]
-    # counter = 0
-    # for i in integer_encoded_dog:
-    #     integer_encoded_dog[counter] /= np.max(integer_encoded_dog)
-    #     counter+=1
     print(integer_encoded_dog)
 
     # %%
@@ -102,6 +121,9 @@ def preprocessing(dataset):
     # for s in np.nditer(unique[min]):
     #         color[color == s] = color[color == unique[mean]][0]
 
+# %%
+# Preprocessing for the naming of the animal.
+# is name present :1 else 0
 
     # Now the unique number of classes in color = 60
     # Need to think of furthur ways to reduce the number of elements

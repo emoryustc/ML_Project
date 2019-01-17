@@ -6,13 +6,12 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 
-
-#%% Preparing the dataset and the putput label
-dataset = np.loadtxt('/home/arjun/PycharmProjects/ML_proj/dataset/train.csv', dtype=str, delimiter=",")
-dataset,outcome = prgm1.preprocessing(dataset)
-partition = np.round(0.8*dataset.shape[0]).__int__()
-train_set = dataset[0:partition,:]
-test_set = dataset[partition:,:]
+# %% Preparing the dataset and the putput label
+dataset = np.loadtxt('../dataset/train.csv', dtype=str, delimiter=",")
+dataset, outcome = prgm1.preprocessing(dataset)
+partition = np.round(0.8 * dataset.shape[0]).__int__()
+train_set = dataset[0:partition, :]
+test_set = dataset[partition:, :]
 
 # %% Training
 
@@ -27,7 +26,7 @@ ensemble.add([RandomForestClassifier(random_state=seed), SVC()])
 # # Attach the final meta estimator
 ensemble.add_meta(LogisticRegression())
 # # Fit ensemble
-ensemble.fit(train_set, train_outcome,gamma="auto")
+ensemble.fit(train_set, train_outcome, gamma="auto")
 # # Predict
 preds = ensemble.predict(test_set)
 print("Fit data:\n%r" % ensemble.data)
