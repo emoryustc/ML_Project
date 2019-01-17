@@ -1,5 +1,6 @@
 from keras.models import Sequential
-from keras.layers import Dense, Activation
+from keras.layers import Dense
+import tensorflow as tf
 
 import numpy as np
 
@@ -7,7 +8,7 @@ train_data = np.load('dataset.npy')
 value_data = np.load('outcome_ohv_r5.npy')
 
 input_dim = train_data.shape[1]
-output_dim = nb_classes = 5
+output_dim = 5
 batch_size = 128
 nb_epoch = 100
 
@@ -20,6 +21,32 @@ def create_network_0():
     """
     model = Sequential()
     model.add(Dense(output_dim, input_dim=input_dim, activation='softmax'))
+    model.summary()
+    return model
+
+
+def create_network_1():
+    """
+    Create simple network
+
+    :return:
+    """
+    model = Sequential()
+    model.add(Dense(128, input_dim=input_dim, activation=tf.nn.relu))
+    model.add(Dense(output_dim, input_dim=128, activation=tf.nn.softmax))
+    model.summary()
+    return model
+
+
+def create_network_2():
+    """
+    Create simple network
+
+    :return:
+    """
+    model = Sequential()
+    model.add(Dense(128, input_dim=input_dim, activation=tf.nn.sigmoid))
+    model.add(Dense(output_dim, input_dim=128, activation=tf.nn.softmax))
     model.summary()
     return model
 
@@ -49,6 +76,6 @@ def evaluate_model(model):
 
 
 if __name__ == '__main__':
-    model = create_network_0()
-    train_model(model)
-    evaluate_model(model)
+    my_model = create_network_1()
+    train_model(my_model)
+    evaluate_model(my_model)
