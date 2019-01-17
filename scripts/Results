@@ -8,4 +8,6 @@ Logistic regression:    49%
 3 layer:                52.5%
 4 layer:                52.5%
 5 layer:                52.5%
+7 layer:                53%
+10 layer:               47%                 over-fitting
 
