@@ -51,7 +51,7 @@ def Stacking(model,train,y,test,n_fold):
 # Model 1
 # model1 = DecisionTreeClassifier(random_state=1)
 
-model1 = RandomForestClassifier()
+model1 = RandomForestClassifier(n_estimators=500,max_features="auto")
 test_pred1 ,train_pred1,train_label1=Stacking(model=model1,n_fold=5, train=x_train,test=x_test,y=y_train)
 
 train_pred1=pd.DataFrame(train_pred1)
