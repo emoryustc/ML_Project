@@ -4,5 +4,8 @@ Decision tree:          43%
 KNN:                    41%
 XGB:                    53%
 Logistic regression:    49%
-Two layer:              52%
+2 layer:                52%
+3 layer:                52.5%
+4 layer:                52.5%
+5 layer:                52.5%
 

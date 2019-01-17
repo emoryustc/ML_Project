@@ -45,8 +45,55 @@ def create_network_2():
     :return:
     """
     model = Sequential()
-    model.add(Dense(128, input_dim=input_dim, activation=tf.nn.sigmoid))
-    model.add(Dense(output_dim, input_dim=128, activation=tf.nn.softmax))
+    model.add(Dense(128, input_dim=input_dim, activation=tf.nn.relu))
+    model.add(Dense(256, input_dim=128, activation=tf.nn.relu))
+    model.add(Dense(output_dim, input_dim=256, activation=tf.nn.softmax))
+    model.summary()
+    return model
+
+
+def create_network_3():
+    """
+    Create simple network
+
+    :return:
+    """
+    model = Sequential()
+    model.add(Dense(128, input_dim=input_dim, activation=tf.nn.relu))
+    model.add(Dense(256, input_dim=128, activation=tf.nn.relu))
+    model.add(Dense(64, input_dim=256, activation=tf.nn.relu))
+    model.add(Dense(output_dim, input_dim=256, activation=tf.nn.softmax))
+    model.summary()
+    return model
+
+
+def create_network_4():
+    """
+    Create simple network
+
+    :return:
+    """
+    model = Sequential()
+    model.add(Dense(128, input_dim=input_dim, activation=tf.nn.relu))
+    model.add(Dense(256, input_dim=128, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=256, activation=tf.nn.relu))
+    model.add(Dense(output_dim, input_dim=512, activation=tf.nn.softmax))
+    model.summary()
+    return model
+
+
+def create_network_5():
+    """
+    Create simple network
+
+    :return:
+    """
+    model = Sequential()
+    model.add(Dense(128, input_dim=input_dim, activation=tf.nn.relu))
+    model.add(Dense(256, input_dim=128, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=256, activation=tf.nn.relu))
+    model.add(Dense(1024, input_dim=512, activation=tf.nn.relu))
+    model.add(Dense(output_dim, input_dim=1024, activation=tf.nn.softmax))
     model.summary()
     return model
 
@@ -76,6 +123,6 @@ def evaluate_model(model):
 
 
 if __name__ == '__main__':
-    my_model = create_network_1()
+    my_model = create_network_5()
     train_model(my_model)
     evaluate_model(my_model)
