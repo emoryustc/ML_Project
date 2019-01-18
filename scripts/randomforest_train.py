@@ -8,10 +8,10 @@ import pandas as pd
 x = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/dataset.npy")
 y = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/outcome.npy")
 model = RandomForestClassifier()
-n_iter = 10
+n_iter = 50
 k_fold = 5
 cv = StratifiedKFold(n_splits=k_fold,shuffle=True)
-param = np.arange(500)
+param = np.arange(1,500)
 param_grid = {'n_estimators': param,
               'max_depth':param,
               'min_samples_split':np.arange(0.1,1.0),

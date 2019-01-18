@@ -189,4 +189,6 @@ def preprocessing(dataset):
 
 if __name__ == '__main__':
     dataset = np.loadtxt('/home/arjun/PycharmProjects/ML_proj/dataset/train.csv', dtype=str, delimiter=",")
-    preprocessing(dataset)
+    dataset, outcome=preprocessing(dataset)
+    np.save("/home/arjun/PycharmProjects/ML_proj/scripts/dataset.npy", dataset)
+    np.save("/home/arjun/PycharmProjects/ML_proj/scripts/outcome.npy", outcome)
