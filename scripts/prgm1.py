@@ -101,20 +101,28 @@ def preprocessing(dataset):
         # %%
         # Preprocessing for the naming of the animal.
         # is name present :1 else 0
-    dog_data = np.hstack((dog_data, np.ones((dog_data.shape[0], 2), int)))
+    dog_data = np.hstack((dog_data, np.ones((dog_data.shape[0], 3), int)))
         # %%
     counter = 0
+    unique, counts = np.unique(dog_data[:, 1], return_counts=True)
+    frequency = dict(zip(unique, counts))
     for i in dog_data[:, 1]:
         if i == "":
-            dog_data[counter,dog_data.shape[1]-2] = 0
-            dog_data[counter, dog_data.shape[1]-1] =0
+            dog_data[counter,dog_data.shape[1]-3] = 0
+            dog_data[counter, dog_data.shape[1]-2] =0
+            dog_data[counter,dog_data.shape[1]-1] =0
         else:
-            dog_data[counter, dog_data.shape[1]-1] = len(i)
+            dog_data[counter, dog_data.shape[1]-2] = len(i)
+            dog_data[counter, dog_data.shape[1]-1] = frequency[i]
         counter += 1
     temp = dog_data[:,13]
     temp= np.array(temp).astype(np.float32)
     temp/=np.max(temp)
     dog_data[:,13] = temp
+    temp = dog_data[:,14]
+    temp= np.array(temp).astype(np.float32)
+    temp/=np.max(temp)
+    dog_data[:,14] = temp
     # dog_data = np.delete(dog_data,1,1)
     # %%
     # Calculating the age of the animal in days.
@@ -152,9 +160,9 @@ def preprocessing(dataset):
 
     dog_data = np.hstack((dog_data, np.ones((dog_data.shape[0], 10), int)))
     # %%
-    indices = {"Herding":15,'Hound':16,'Mix':17,'Non-Sporting':18,
-               'Pit Bull':19,'Sporting':20,'Terrier':21,'Toy':22,
-               'Unknown':23,'Working':24}
+    indices = {"Herding":16,'Hound':17,'Mix':18,'Non-Sporting':19,
+               'Pit Bull':20,'Sporting':21,'Terrier':22,'Toy':23,
+               'Unknown':24,'Working':25}
     dog_breeds = breed_processing.breeder()
     counter = 0
     for breed in dog_breeds[:-1]:
@@ -185,6 +193,7 @@ def preprocessing(dataset):
     # and preparing the final dataset to be fed to the network.
 
     dog_data = np.delete(dog_data,slice(0,9),1)
+
     return dog_data,integer_encoded_dog
 
 if __name__ == '__main__':
