@@ -1,15 +1,40 @@
 import pandas as pd
-import numpy as np
 
 # patterning function separating different patterns from the color data
 
 df = pd.read_csv('../dataset/train.csv', sep=',')
+df = df[df.AnimalType == 'Dog']
+# print(df)
+
 patternlist = ["Agouti", "Brindle", "Calico", "Merle", "Point", "Smoke", "Tabby", "Tick", "Tiger", "Torbie", "Tortie",
                "Tricolor"]
+
+unique_color_set = ['White', 'Red', 'Pink', 'Silver', 'Flame', 'Blue', 'Liver', 'Ruddy', 'Lilac', 'Tan', 'Chocolate',
+                    'Yellow', 'Gray', 'Seal', 'Apricot', 'Buff', 'Lynx', 'Fawn', 'Orange', 'Gold', 'Sable', 'Cream',
+                    'Black', 'Brown']
+
+unique_color_set_for_dog = ['Pink', 'Silver', 'Ruddy', 'Blue', 'Tan', 'Liver', 'White', 'Sable', 'Orange', 'Gray',
+                            'Chocolate', 'Yellow', 'Fawn', 'Brown', 'Apricot', 'Cream', 'Buff', 'Gold', 'Black', 'Red']
+
+unique_pattern_set_for_dog = ['Merle', 'Tabby', 'Tick', 'Brindle', 'Tricolor', 'Tiger', 'Smoke']
 
 
 def get_colorset():  # get all the colors
     colorlist = list(set(df["Color"]))
+    # print(colorlist)
+
+    list_pattern = set()
+    for item in colorlist:
+        l_item = item.split('/')
+        if len(item.split('/')) == 2:
+            for l_i in l_item:
+                if len(l_i.split(' ')) == 2:
+                    list_pattern.add(l_i.split(' ')[-1])
+        else:
+            if len(l_item[0].split(' ')) == 2:
+                list_pattern.add(l_item[0].split(' ')[-1])
+    # print(list_pattern)
+
     newlist = []
     # split items by '/'
     for item in colorlist:
@@ -18,6 +43,7 @@ def get_colorset():  # get all the colors
             newlist.extend((item1, item2))
         else:
             newlist.append(item)
+
     truelist = []
     # further split items by space
     for item in newlist:
@@ -27,7 +53,10 @@ def get_colorset():  # get all the colors
             truelist.extend(alist)
         else:
             truelist.append(item)
+
     colorset = set(truelist) - set(patternlist)  # colorset is the color excluding the patterns
+    # print(set(colorset))
+    # print(set(truelist) - set(colorset))
     return colorset
 
 
@@ -43,7 +72,7 @@ def get_color(color):
             # print(item, count)
             elif (colortype in color) & (count > 0):
                 count += 1
-    return (count)
+    return count
 
 
 def get_pattern(color):
@@ -76,7 +105,7 @@ if __name__ == '__main__':
         elif colornumber == 3:
             df.at[i, 'ColorCategory'] = "tricolor"
 
-        print('Colornumber', df.at[i, 'ColorCategory'], "color", df.at[i, 'Color'])
+        # print('Colornumber', df.at[i, 'ColorCategory'], "color", df.at[i, 'Color'])
 
         # get patterns
         pattern = get_pattern(df.at[i, 'Color'])
