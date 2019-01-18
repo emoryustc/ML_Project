@@ -15,6 +15,11 @@ unique_color_set = ['White', 'Red', 'Pink', 'Silver', 'Flame', 'Blue', 'Liver', 
 
 unique_color_set_for_dog = ['Pink', 'Silver', 'Ruddy', 'Blue', 'Tan', 'Liver', 'White', 'Sable', 'Orange', 'Gray',
                             'Chocolate', 'Yellow', 'Fawn', 'Brown', 'Apricot', 'Cream', 'Buff', 'Gold', 'Black', 'Red']
+unique_color_group_for_dog = ['light', 'light', 'medium', 'medium', 'dark', 'dark', 'light', 'dark', 'medium', 'medium',
+                              'dark', 'light', 'light', 'dark', 'light', 'light', 'light', 'light', 'dark', 'medium']
+unique_color_group2_for_dog = ['warm', 'medium', 'warm', 'cold', 'medium', 'medium', 'medium', 'medium', 'warm',
+                               'medium', 'medium', 'warm', 'warm', 'medium', 'warm', 'medium', 'warm', 'warm', 'medium',
+                               'warm']
 
 unique_pattern_set_for_dog = ['Merle', 'Tabby', 'Tick', 'Brindle', 'Tricolor', 'Tiger', 'Smoke']
 
