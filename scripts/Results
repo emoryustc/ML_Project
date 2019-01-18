@@ -1,15 +1,17 @@
-Random forest:          51%
-SVM:                    50%
-Decision tree:          33%
-KNN:                    45%
-XGB:                    53%
-Bagging with RF:        51%
-Bagging with XGB:       55%
-Logistic regression:    49%
-2 layer:                52%
-3 layer:                52.5%
-4 layer:                52.5%
-5 layer:                52.5%
-7 layer:                53%
-10 layer:               47%                 over-fitting
-10 layer (3 dropout):   23%
+Accuracy:
+
+Random forest:              51%
+SVM:                        50%
+Decision tree:              33%
+KNN:                        45%
+XGB:                        53%
+Bagging with RF:            51%
+Bagging with XGB:           55%
+1 layer NN:                 49%
+2 layer NN:                 52%
+3 layer NN:                 52.5%
+4 layer NN:                 52.5%
+5 layer NN:                 52.5%
+7 layer NN:                 53%
+10 layer NN:                47%                 over-fitting
+10 layer NN (3 dropout):    23%
