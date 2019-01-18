@@ -1,7 +1,7 @@
-Random forest:          44%
+Random forest:          51%
 SVM:                    50%
-Decision tree:          43%
-KNN:                    41%
+Decision tree:          33%
+KNN:                    45%
 XGB:                    53%
 Logistic regression:    49%
 2 layer:                52%
