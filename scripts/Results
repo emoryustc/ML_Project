@@ -4,6 +4,7 @@ Decision tree:          33%
 KNN:                    45%
 XGB:                    53%
 Bagging with RF:        51%
+Bagging with XGB:       55%
 Logistic regression:    49%
 2 layer:                52%
 3 layer:                52.5%
