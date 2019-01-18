@@ -3,3 +3,11 @@ SVM:                    50%
 Decision tree:          43%
 KNN:                    41%
 XGB:                    53%
+Logistic regression:    49%
+2 layer:                52%
+3 layer:                52.5%
+4 layer:                52.5%
+5 layer:                52.5%
+7 layer:                53%
+10 layer:               47%                 over-fitting
+
