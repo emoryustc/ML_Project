@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 # patterning function separating different patterns from the color data
 
@@ -83,6 +84,7 @@ def get_color(color):
 def get_pattern(color):
     pattern = ''
     count = 0
+
     for patterntype in patternlist:
         if (patterntype in color) & (count == 0):
             pattern += patterntype
@@ -90,11 +92,23 @@ def get_pattern(color):
         elif (patterntype in color) & (count > 0):
             pattern = pattern + '/' + patterntype
             count += 1
+
     return pattern
 
 
 if __name__ == '__main__':
+    color_group_1 = np.array([unique_color_set_for_dog, unique_color_group_for_dog]).T
+    dog_group_1 = np.unique(color_group_1[:, 1])
+
+    color_group_2 = np.array([unique_color_set_for_dog, unique_color_group2_for_dog]).T
+    dog_group_2 = np.unique(color_group_2[:, 1])
+
+    # if breed in dog_group_1[:, 0]:
+    #     if breed in dog_group_2[:, 0]:
+
     colorset = list(get_colorset())
+    dataset = np.load('dataset.npy')
+    print(dataset[0])
 
     for i in df.index:
         # get color number
