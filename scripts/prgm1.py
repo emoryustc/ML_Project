@@ -1,6 +1,7 @@
 import re
 from scripts import breed_processing
 import numpy as np
+import datetime
 from sklearn.preprocessing import normalize
 
 def preprocessing(dataset):
@@ -188,6 +189,25 @@ def preprocessing(dataset):
             dog_data[counter,indices["Working"]] = 0
 
         counter+=1
+    # %% Intake date processing
+    dog_data = np.hstack((dog_data, np.ones((dog_data.shape[0], 5), int)))
+    # %%
+    date_array = np.core.defchararray.split(dog_data[:,2],"-")
+    counter = 0
+    for date in date_array:
+        dog_data[counter,dog_data.shape[1]-5] = date[0] #Year
+        dog_data[counter, dog_data.shape[1]-4] = date[1] #month
+        dog_data[counter, dog_data.shape[1]-3] = date[2].split(" ")[0]  # day
+        dog_data[counter, dog_data.shape[1]-2] = date[2].split(" ")[1].split(":")[0]  # hour
+        dog_data[counter, dog_data.shape[1]-1] = datetime.datetime(
+            np.int(date[0]),np.int(date[1]),np.int(date[2].split(" ")[0])
+        ).weekday()
+        counter+=1
+    for i in range(26,31):
+        temp = dog_data[:,i]
+        temp = np.array(temp).astype(np.float32)
+        temp /= np.max(temp)
+        dog_data[:,i] = temp
 
     # %%Deleting unwanted collums from the dataset,
     # and preparing the final dataset to be fed to the network.

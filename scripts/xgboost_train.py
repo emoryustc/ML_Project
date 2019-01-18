@@ -32,6 +32,7 @@ param_grid = {'max_depth': sp_randint(1, 90),
 
 search_GB = RandomizedSearchCV(GB,param_grid,\
                n_iter=n_iter,cv=cv,verbose=True).fit(x,y)
+print (search_GB.cv_results_)
 print (' ', search_GB.best_score_)
 print(' ', search_GB.best_params_)
 # save the results
