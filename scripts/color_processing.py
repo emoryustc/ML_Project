@@ -3,6 +3,8 @@ import numpy as np
 
 #patterning function separating different patterns from the color data
 
+df = pd.read_csv('train.csv', sep=',')
+
 def get_colorset(): # get all the colors
     colorlist = list(set(df["Color"]))
     newlist = []
@@ -53,6 +55,7 @@ def get_pattern(color):
             count += 1
     return pattern
 
+patternlist = ["Agouti", "Brindle", "Calico", "Merle", "Point", "Smoke", "Tabby", "Tick", "Tiger", "Torbie", "Tortie", "Tricolor"]
 
 for i in df.index:
     # get color number
