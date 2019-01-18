@@ -3,9 +3,6 @@ import numpy as np
 
 # patterning function separating different patterns from the color data
 
-df = pd.read_csv('../dataset/train.csv', sep=',')
-df = df[df.AnimalType == 'Dog']
-# print(df)
 
 patternlist = ["Agouti", "Brindle", "Calico", "Merle", "Point", "Smoke", "Tabby", "Tick", "Tiger", "Torbie", "Tortie",
                "Tricolor"]
@@ -127,17 +124,46 @@ def get_and_set_param_by_color_theory(color_des):
                 list_feature.add(color_group_1[ind1, 1][0])
                 list_feature.add(color_group_2[ind2, 1][0])
 
+            if des in unique_pattern_set_for_dog:
+                list_feature.add(des)
+
     # print(list_feature)
     return list_feature
 
 
 if __name__ == '__main__':
+    df = pd.read_csv('../dataset/train.csv', sep=',')
+    # df = df[df.AnimalType == 'Dog']
+    df = df[df['AnimalType'] == 'Dog']
+    print(df)
+
     colorset = list(get_colorset())
     dataset = np.load('dataset.npy')
+    print(dataset.shape)
     dataset = np.hstack((dataset, np.zeros((dataset.shape[0], 6), dtype=dataset.dtype)))
+    shape0 = dataset.shape[1]
 
+    index_for_dataset = 0
     for i in df.index:
-        get_and_set_param_by_color_theory(df.at[i, 'Color'])
+        # print(index_for_dataset)
+        features = get_and_set_param_by_color_theory(df.at[i, 'Color'])
+        # print(features)
+
+        for j in range(6):
+            dataset[index_for_dataset][shape0 - j - 1] = 0
+
+        if 'light' in features:
+            dataset[index_for_dataset][shape0 - 1] = 1
+        if 'l-medium' in features:
+            dataset[index_for_dataset][shape0 - 2] = 1
+        if 'dark' in features:
+            dataset[index_for_dataset][shape0 - 3] = 1
+        if 'warm' in features:
+            dataset[index_for_dataset][shape0 - 4] = 1
+        if 'medium' in features:
+            dataset[index_for_dataset][shape0 - 5] = 1
+        if 'cold' in features:
+            dataset[index_for_dataset][shape0 - 6] = 1
 
     #     # get color number
     #     colornumber = get_color(df.at[i, 'Color'])
@@ -162,5 +188,7 @@ if __name__ == '__main__':
     #     # mixedlist.append(pattern)
     #     # df['Pattern'] = "mixed"
     #     # print('new',df['Pattern'])
+
+        index_for_dataset += 1
 
     np.save('dataset_color6.npy', dataset)
