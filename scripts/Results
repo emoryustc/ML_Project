@@ -3,6 +3,7 @@ SVM:                    50%
 Decision tree:          33%
 KNN:                    45%
 XGB:                    53%
+Bagging with RF:        51%
 Logistic regression:    49%
 2 layer:                52%
 3 layer:                52.5%
@@ -10,4 +11,4 @@ Logistic regression:    49%
 5 layer:                52.5%
 7 layer:                53%
 10 layer:               47%                 over-fitting
-
+10 layer (3 dropout):   23%

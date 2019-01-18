@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 import tensorflow as tf
 
 import numpy as np
@@ -137,6 +137,30 @@ def create_network_7():
     return model
 
 
+def create_network_8():
+    """
+    Create simple network
+
+    :return:
+    """
+    model = Sequential()
+    model.add(Dense(128, input_dim=input_dim, activation=tf.nn.relu))
+    model.add(Dense(256, input_dim=128, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=256, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=512, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=512, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=512, activation=tf.nn.relu))
+    model.add(Dropout(0.7, noise_shape=None, seed=None))
+    model.add(Dense(1024, input_dim=512, activation=tf.nn.relu))
+    model.add(Dropout(0.7, noise_shape=None, seed=None))
+    model.add(Dense(1024, input_dim=1024, activation=tf.nn.relu))
+    model.add(Dropout(0.7, noise_shape=None, seed=None))
+    model.add(Dense(1024, input_dim=1024, activation=tf.nn.relu))
+    model.add(Dense(output_dim, input_dim=1024, activation=tf.nn.softmax))
+    model.summary()
+    return model
+
+
 def train_model(model):
     """
     Train the network
@@ -162,6 +186,6 @@ def evaluate_model(model):
 
 
 if __name__ == '__main__':
-    my_model = create_network_7()
+    my_model = create_network_8()
     train_model(my_model)
     evaluate_model(my_model)
