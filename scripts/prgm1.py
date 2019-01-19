@@ -1,5 +1,5 @@
 import re
-from scripts import breed_processing
+from scripts import breed_processing, color_processing
 import numpy as np
 import datetime
 
@@ -12,7 +12,7 @@ def pre_processing(dataset):
     :return:
     """
     dog_count = np.count_nonzero(dataset[:, 5] == 'Dog')
-    new_dataset = np.zeros((dog_count, 22))
+    new_dataset = np.zeros((dog_count, 29))
 
     unique, counts = np.unique(dataset[:, 1], return_counts=True)
     frequency = dict(zip(unique, counts))
@@ -28,13 +28,15 @@ def pre_processing(dataset):
 
     dog_breeds = breed_processing.breeder()
     indices_breeds = {"Herding": 0, 'Hound': 1, 'Mix': 2, 'Non-Sporting': 3,
-               'Pit Bull': 4, 'Sporting': 5, 'Terrier': 6, 'Toy': 7,
-               'Unknown': 8, 'Working': 9}
+                      'Pit Bull': 4, 'Sporting': 5, 'Terrier': 6, 'Toy': 7,
+                      'Unknown': 8, 'Working': 9}
 
     index_for_new_dataset_row = 0
 
     for i in range(dataset.shape[0]):
         index_for_new_dataset_column = 0
+        if i % 100 == 0:
+            print('Processing No.' + str(i) + ' record...')
 
         # Process dog data
         if dataset[i][5] == 'Dog':
@@ -53,6 +55,7 @@ def pre_processing(dataset):
             else:
                 new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
             index_for_new_dataset_column += 1
+            # print('Name processing finished')
 
             # Datatime processing
             a_data = dataset[i, 2].split(' ')[0].split('-')
@@ -76,6 +79,7 @@ def pre_processing(dataset):
                                                                                                  int(a_data[2])) \
                                                                                        .weekday() / 6.0
             index_for_new_dataset_column += 1
+            # print('Date time processing finished')
 
             # Sex processing
             # 8 offset
@@ -87,6 +91,7 @@ def pre_processing(dataset):
             if "Neutered" in dataset[i][6]:
                 new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
             index_for_new_dataset_column += 1
+            # print('Gender processing finished')
 
             # Age processing
             # Calculating the age of the animal in days.
@@ -107,36 +112,75 @@ def pre_processing(dataset):
             new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = np.sqrt(days) / np.sqrt(
                 max_age_in_year * 365)
             index_for_new_dataset_column += 1
+            # print('Age processing finished')
 
             # Breed processing
             # 11-20 offset
             for breed in dog_breeds[index_for_new_dataset_row]:
                 new_dataset[index_for_new_dataset_row, index_for_new_dataset_column + indices_breeds[breed]] = 1
             index_for_new_dataset_column += 10
+            # print('Breed processing finished')
+
+            # Color processing
+            features = color_processing.get_and_set_param_by_color_theory(dataset[i, 9])
+
+            # 21 offset
+            if 'l-light' in features:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+            index_for_new_dataset_column += 1
+            # 22 offset
+            if 'l-medium' in features:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+            index_for_new_dataset_column += 1
+            # 23 offset
+            if 'l-dark' in features:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+            index_for_new_dataset_column += 1
+            # 24 offset
+            if 'warm' in features:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+            index_for_new_dataset_column += 1
+            # 25 offset
+            if 'medium' in features:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+            index_for_new_dataset_column += 1
+            # 26 offset
+            if 'cold' in features:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+            index_for_new_dataset_column += 1
+
+            # 27 offset
+            count = 0
+            for feature in features:
+                if 'l-' in feature:
+                    count += 1
+            if count > 1:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+            index_for_new_dataset_column += 1
+            # 28 offset
+            count = 0
+            for feature in features:
+                if 'l-' not in feature:
+                    count += 1
+            if count > 1:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+            index_for_new_dataset_column += 1
 
             index_for_new_dataset_row += 1
 
-    print(new_dataset[:, 11:20][:30])
-    return None
+    print(new_dataset[:, 21:29][:30])
 
     # Creating the target set, which is a one hot vector of the 5 possible classes
-    target_dog = dog_data[:, 3]
-    vector = {'Adoption': 16
-        , 'Died': 8
-        , 'Euthanasia': 4
-        , 'Return_to_owner': 2
-        , 'Transfer': 1}
-    integer_encoded_dog = [vector[str] for str in target_dog]
-    print(integer_encoded_dog)
+    # target_dog = dataset[:, 3]
+    # vector = {'Adoption': 16
+    #     , 'Died': 8
+    #     , 'Euthanasia': 4
+    #     , 'Return_to_owner': 2
+    #     , 'Transfer': 1}
+    # integer_encoded_dog = [vector[str] for str in target_dog]
+    # print(integer_encoded_dog)
 
-    for color in dog_data[:, 8]:
-        if "/" in color:
-            print("uni")
-            #     one for multi
-            dog_data[counter, (dog_data.shape[1] - 1)] = 0
-        counter += 1
-
-    return dog_data, integer_encoded_dog
+    # return new_dataset, integer_encoded_dog
 
 
 if __name__ == '__main__':
