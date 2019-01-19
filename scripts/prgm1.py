@@ -47,30 +47,24 @@ def pre_processing(dataset):
             a_data = dataset[i, 2].split(' ')[0].split('-')
             a_time = dataset[i, 2].split(' ')[-1].split(':')
             # 3 offset
-            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = a_data[0]  # Year
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = (int(a_data[0]) - 2013) / 3.0  # Year
             index_for_new_dataset_column += 1
             # 4 offset
-            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = a_data[1]  # Month
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = int(a_data[1]) / 12.0  # Month
             index_for_new_dataset_column += 1
             # 5 offset
-            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = a_data[2]  # Day
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = int(a_data[2]) / 31.0  # Day
             index_for_new_dataset_column += 1
 
             # 6 offset
-            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = a_time[0]  # Hour
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = int(a_time[0]) / 24.0  # Hour
             index_for_new_dataset_column += 1
             # 7 offset
             new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = datetime.date(int(a_data[0]),
                                                                                                  int(a_data[1]),
-                                                                                                 int(a_data[2])). \
-                weekday()
+                                                                                                 int(a_data[2])) \
+                                                                                       .weekday() / 6.0
             index_for_new_dataset_column += 1
-
-            # for i in range(26, 31):
-            #     temp = dog_data[:, i]
-            #     temp = np.array(temp).astype(np.float32)
-            #     temp /= np.max(temp)
-            #     dog_data[:, i] = temp
 
             index_for_new_dataset_row += 1
         pass
