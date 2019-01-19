@@ -212,7 +212,7 @@ def breeder():
 
     not_f_unique, counts_1 = np.unique(not_found, return_counts=True)
     unique_groups, counts_2 = np.unique(group_values_dog, return_counts=True)
-    print(unique_groups)
+    # print(unique_groups)
     # add mix, pit bull, and unknown to the groups
     groups = np.unique(np.append(dog_groups, ['Mix', 'Pit Bull', 'Unknown']))
     dog_breeds = np.array(group_values_dog)
