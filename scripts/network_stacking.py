@@ -16,7 +16,7 @@ import xgboost as xgb
 # %%
 
 dataset = np.loadtxt('/home/arjun/PycharmProjects/ML_proj/dataset/train.csv', dtype=str, delimiter=",")
-dataset,outcome = prgm1.preprocessing(dataset)
+dataset,outcome = prgm1.pre_processing(dataset)
 np.save("/home/arjun/PycharmProjects/ML_proj/scripts/dataset.npy", dataset)
 np.save("/home/arjun/PycharmProjects/ML_proj/scripts/outcome.npy", outcome)
 # %%

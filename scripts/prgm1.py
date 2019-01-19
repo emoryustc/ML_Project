@@ -2,29 +2,58 @@ import re
 from scripts import breed_processing
 import numpy as np
 import datetime
-from sklearn.preprocessing import normalize
 
 
-def preprocessing(dataset):
-    # Creating the required fields in the dataset
-    data = dataset[1:, 0:4]
-    data = np.hstack((data, dataset[1:, 5:]))
-    # print (data)
-    dog_data = np.empty((9,), str)
-    cat_data = np.empty((9,), str)
-    # dog dataset
-    for row in data[1:, :]:
-        # print (row)
-        if row[4] == "Dog":
-            dog_data = np.vstack((dog_data, row))
-        elif row[4] == "Cat":
-            cat_data = np.vstack((cat_data, row))
+def pre_processing(dataset):
+    """
+    Preprocess data
 
-    dog_data = dog_data[1:, :]
-    cat_data = cat_data[1:, :]
-    # Adding gender field and neutered field
-    dog_data = np.hstack((dog_data, np.ones((dog_data.shape[0], 2), int)))
-    cat_data = np.hstack((cat_data, np.ones((cat_data.shape[0], 2), int)))
+    :param dataset:
+    :return:
+    """
+    dog_count = np.count_nonzero(dataset[:, 5] == 'Dog')
+    new_dataset = np.zeros((dog_count, 22))
+
+    unique, counts = np.unique(dataset[:, 1], return_counts=True)
+    frequency = dict(zip(unique, counts))
+    frequency[''] = 0
+    max_occurrence_times = max(frequency.values())
+    max_length_of_names = len(max(frequency.keys(), key=len))
+
+    index_for_new_dataset_row = 0
+
+    for i in range(dataset.shape[0]):
+        index_for_new_dataset_column = 0
+
+        # Process dog data
+        if dataset[i][5] == 'Dog':
+            # Name processing
+            # 0 offset
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = len(
+                dataset[i][1]) / max_length_of_names
+            index_for_new_dataset_column += 1
+            # 1 offset
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = frequency[dataset[i][
+                1]] / max_occurrence_times
+            index_for_new_dataset_column += 1
+            # 2 offset
+            if dataset[i][1] == '':
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 0
+            else:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+            index_for_new_dataset_column += 1
+
+            # Datatime processing
+            # 3 offset
+
+
+
+            index_for_new_dataset_row += 1
+            pass
+
+
+    print(new_dataset[:10])
+    return None
 
     counter = 0
     for i in dog_data[:, :]:
@@ -33,15 +62,6 @@ def preprocessing(dataset):
         if "Neutered" in i[5]:
             dog_data[counter, 10] = 0
         counter += 1
-    counter = 0
-    for i in cat_data[:, :-1]:
-        if "Female" in i[5]:
-            cat_data[counter, 9] = 0
-        if "Neutered" in i[5]:
-            cat_data[counter, 10] = 0
-        counter += 1
-
-    print(dog_data)
 
     # Creating the target set, which is a one hot vector of the 5 possible classes
     target_dog = dog_data[:, 3]
@@ -53,12 +73,6 @@ def preprocessing(dataset):
         , 'Transfer': 1}
     integer_encoded_dog = [vector[str] for str in target_dog]
     print(integer_encoded_dog)
-
-    # Data Preprocessing
-    # Color field : First we count the occurence of all the unique lables that are present,
-    # then we find the mean of the counts and the label associated with this mean count.
-    # Then we replace all the labels with single  treat dogs and cats separately in all caseoccurences to the label with the mean occurence.
-    # This is known as imputation.
 
     # color = dataset[1:,9]
     # print (color)
@@ -212,6 +226,6 @@ def preprocessing(dataset):
 
 if __name__ == '__main__':
     dataset = np.loadtxt('../dataset/train.csv', dtype=str, delimiter=",")
-    dataset, outcome = preprocessing(dataset)
-    np.save("dataset.npy", dataset)
-    np.save("outcome.npy", outcome)
+    dataset, outcome = pre_processing(dataset)
+    np.save("dataset1.npy", dataset)
+    np.save("outcome1.npy", outcome)

@@ -8,7 +8,7 @@ from sklearn.svm import SVC
 
 # %% Preparing the dataset and the putput label
 dataset = np.loadtxt('../dataset/train.csv', dtype=str, delimiter=",")
-dataset, outcome = prgm1.preprocessing(dataset)
+dataset, outcome = prgm1.pre_processing(dataset)
 partition = np.round(0.8 * dataset.shape[0]).__int__()
 train_set = dataset[0:partition, :]
 test_set = dataset[partition:, :]
