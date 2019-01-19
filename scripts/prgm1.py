@@ -66,22 +66,27 @@ def pre_processing(dataset):
                                                                                        .weekday() / 6.0
             index_for_new_dataset_column += 1
 
-            index_for_new_dataset_row += 1
-        pass
+            # Sex processing
+            # 8 offset
+            if "Female" in dataset[i][6]:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+                index_for_new_dataset_column += 1
 
-    print(new_dataset[:10])
+            # 9 offset
+            if "Neutered" in dataset[i][6]:
+                new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
+                index_for_new_dataset_column += 1
+
+
+
+
+            index_for_new_dataset_row += 1
+
+    print(new_dataset[:, 10][:30])
     return None
-    counter = 0
-    for i in dog_data[:, :]:
-        if "Female" in i[5]:
-            dog_data[counter, 9] = 0
-        if "Neutered" in i[5]:
-            dog_data[counter, 10] = 0
-        counter += 1
 
     # Creating the target set, which is a one hot vector of the 5 possible classes
     target_dog = dog_data[:, 3]
-    print(target_dog)
     vector = {'Adoption': 16
         , 'Died': 8
         , 'Euthanasia': 4
@@ -89,27 +94,6 @@ def pre_processing(dataset):
         , 'Transfer': 1}
     integer_encoded_dog = [vector[str] for str in target_dog]
     print(integer_encoded_dog)
-
-    # color = dataset[1:,9]
-    # print (color)
-    # unique,pos = np.unique(color,return_inverse=True)
-    # counts = np.bincount(pos)
-    # print("counts",counts)
-    # mean = np.where(counts == np.int(np.round(np.mean(counts))))
-    # # min = np.where(counts == counts.min())
-    # min = np.where(counts<=50)
-    # for s in np.nditer(unique[min]):
-    #         color[color == s] = color[color == unique[mean]][0]
-
-    # %%
-    # Preprocessing for the naming of the animal.
-    # is name present :1 else 0
-
-    # Now the unique number of classes in color = 60
-    # Need to think of furthur ways to reduce the number of elements
-    # Need to create a onehot vector possibly for all the results.
-    dog_data = np.hstack((dog_data, np.ones((dog_data.shape[0], 1), int)))
-    counter = 0
 
     for color in dog_data[:, 8]:
         if "/" in color:
