@@ -13,9 +13,9 @@ unique_color_set = ['White', 'Red', 'Pink', 'Silver', 'Flame', 'Blue', 'Liver', 
 
 unique_color_set_for_dog = ['Pink', 'Silver', 'Ruddy', 'Blue', 'Tan', 'Liver', 'White', 'Sable', 'Orange', 'Gray',
                             'Chocolate', 'Yellow', 'Fawn', 'Brown', 'Apricot', 'Cream', 'Buff', 'Gold', 'Black', 'Red']
-unique_color_group_for_dog = ['light', 'light', 'l-medium', 'l-medium', 'dark', 'dark', 'light', 'dark', 'l-medium',
-                              'l-medium',
-                              'dark', 'light', 'light', 'dark', 'light', 'light', 'light', 'light', 'dark', 'l-medium']
+unique_color_group_for_dog = ['l-light', 'l-light', 'l-medium', 'l-medium', 'l-dark', 'l-dark', 'l-light', 'l-dark',
+                              'l-medium', 'l-medium', 'l-dark', 'l-light', 'l-light', 'l-dark', 'l-light', 'l-light',
+                              'l-light', 'l-light', 'l-dark', 'l-medium']
 unique_color_group2_for_dog = ['warm', 'medium', 'warm', 'cold', 'medium', 'medium', 'medium', 'medium', 'warm',
                                'medium', 'medium', 'warm', 'warm', 'medium', 'warm', 'medium', 'warm', 'warm', 'medium',
                                'warm']
@@ -165,29 +165,29 @@ if __name__ == '__main__':
         if 'cold' in features:
             dataset[index_for_dataset][shape0 - 6] = 1
 
-    #     # get color number
-    #     colornumber = get_color(df.at[i, 'Color'])
-    #     # print(colornumber)
-    #
-    #     if colornumber == 0:
-    #         df.at[i, 'ColorCategory'] = "unknow"
-    #     elif colornumber == 1:
-    #         df.at[i, 'ColorCategory'] = "unicolor"
-    #     elif colornumber == 2:
-    #         df.at[i, 'ColorCategory'] = "two-tones"
-    #     elif colornumber == 3:
-    #         df.at[i, 'ColorCategory'] = "tricolor"
-    #
-    #     # print('Colornumber', df.at[i, 'ColorCategory'], "color", df.at[i, 'Color'])
-    #
-    #     # get patterns
-    #     pattern = get_pattern(df.at[i, 'Color'])
-    #     # print('color',df.at[i, 'Color'],'pattern',pattern)
-    #     df.at[i, 'Pattern'] = pattern
-    #     # if '/' in pattern:
-    #     # mixedlist.append(pattern)
-    #     # df['Pattern'] = "mixed"
-    #     # print('new',df['Pattern'])
+        #     # get color number
+        #     colornumber = get_color(df.at[i, 'Color'])
+        #     # print(colornumber)
+        #
+        #     if colornumber == 0:
+        #         df.at[i, 'ColorCategory'] = "unknow"
+        #     elif colornumber == 1:
+        #         df.at[i, 'ColorCategory'] = "unicolor"
+        #     elif colornumber == 2:
+        #         df.at[i, 'ColorCategory'] = "two-tones"
+        #     elif colornumber == 3:
+        #         df.at[i, 'ColorCategory'] = "tricolor"
+        #
+        #     # print('Colornumber', df.at[i, 'ColorCategory'], "color", df.at[i, 'Color'])
+        #
+        #     # get patterns
+        #     pattern = get_pattern(df.at[i, 'Color'])
+        #     # print('color',df.at[i, 'Color'],'pattern',pattern)
+        #     df.at[i, 'Pattern'] = pattern
+        #     # if '/' in pattern:
+        #     # mixedlist.append(pattern)
+        #     # df['Pattern'] = "mixed"
+        #     # print('new',df['Pattern'])
 
         index_for_dataset += 1
 
