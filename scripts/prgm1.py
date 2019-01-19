@@ -20,6 +20,12 @@ def pre_processing(dataset):
     max_occurrence_times = max(frequency.values())
     max_length_of_names = len(max(frequency.keys(), key=len))
 
+    set_years = set()
+    for i in range(dataset.shape[0]):
+        if 'years' in dataset[i, 7]:
+            set_years.add(int(dataset[i, 7].split(' ')[0]))
+    max_age_in_year = max(set_years)
+
     index_for_new_dataset_row = 0
 
     for i in range(dataset.shape[0]):
@@ -70,19 +76,36 @@ def pre_processing(dataset):
             # 8 offset
             if "Female" in dataset[i][6]:
                 new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
-                index_for_new_dataset_column += 1
+            index_for_new_dataset_column += 1
 
             # 9 offset
             if "Neutered" in dataset[i][6]:
                 new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
-                index_for_new_dataset_column += 1
+            index_for_new_dataset_column += 1
 
-
-
+            # Age processing
+            # Calculating the age of the animal in days.
+            if dataset[i, 7] == '':
+                days = 0
+            else:
+                first = np.int(dataset[i, 7].split(' ')[0])
+                second = dataset[i, 7].split(' ')[1]
+                if re.match(second, "years|year"):
+                    days = 365 * first
+                if re.match(second, "months|month"):
+                    days = 30 * first
+                if re.match(second, "weeks|week"):
+                    days = 7 * first
+                if re.match(second, "days|day"):
+                    days = first
+            # 10 offset
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = np.sqrt(days) / np.sqrt(
+                max_age_in_year * 365)
+            index_for_new_dataset_column += 1
 
             index_for_new_dataset_row += 1
 
-    print(new_dataset[:, 10][:30])
+    print(new_dataset[:, 11][:30])
     return None
 
     # Creating the target set, which is a one hot vector of the 5 possible classes
@@ -133,36 +156,6 @@ def pre_processing(dataset):
     dog_data[:, 14] = temp
     # dog_data = np.delete(dog_data,1,1)
     # %%
-    # Calculating the age of the animal in days.
-    dog_data = np.hstack((dog_data, np.ones((dog_data.shape[0], 1), int)))
-    AgeUponOutcome = dog_data[:, 6]
-    day_set = []
-    for entry in AgeUponOutcome:
-        if entry == "":
-            days = 0
-            day_set = np.append(day_set, days)
-            continue
-        first = np.int(entry.split(" ")[0])
-        second = entry.split(" ")[1]
-        if re.match(second, ("years|year")):
-            days = 365 * first
-        if re.match(second, ("months|month")):
-            days = 30 * first
-        if re.match(second, ("weeks|week")):
-            days = 7 * first
-        if re.match(second, ("days|day")):
-            days = first
-        day_set = np.append(day_set, days)
-
-    counter = 0
-    for i in day_set:
-        day_set[counter] /= np.max(day_set)
-        counter += 1
-    counter = 0
-    for i in day_set:
-        dog_data[counter, dog_data.shape[1] - 1] = day_set[counter]
-        counter += 1
-    print(day_set)
 
     # %% Section for integrating the breed
 
