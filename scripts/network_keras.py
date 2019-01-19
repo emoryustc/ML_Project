@@ -4,8 +4,8 @@ import tensorflow as tf
 
 import numpy as np
 
-train_data = np.load('dataset.npy')
-value_data = np.load('outcome_ohv_r5.npy')
+train_data = np.load('dataset1.npy')
+value_data = np.load('outcome_ohv_r5_1.npy')
 
 input_dim = train_data.shape[1]
 output_dim = 5
@@ -186,6 +186,6 @@ def evaluate_model(model):
 
 
 if __name__ == '__main__':
-    my_model = create_network_8()
+    my_model = create_network_6()
     train_model(my_model)
     evaluate_model(my_model)
