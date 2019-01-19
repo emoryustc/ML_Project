@@ -44,17 +44,39 @@ def pre_processing(dataset):
             index_for_new_dataset_column += 1
 
             # Datatime processing
+            a_data = dataset[i, 2].split(' ')[0].split('-')
+            a_time = dataset[i, 2].split(' ')[-1].split(':')
             # 3 offset
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = a_data[0]  # Year
+            index_for_new_dataset_column += 1
+            # 4 offset
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = a_data[1]  # Month
+            index_for_new_dataset_column += 1
+            # 5 offset
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = a_data[2]  # Day
+            index_for_new_dataset_column += 1
 
+            # 6 offset
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = a_time[0]  # Hour
+            index_for_new_dataset_column += 1
+            # 7 offset
+            new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = datetime.date(int(a_data[0]),
+                                                                                                 int(a_data[1]),
+                                                                                                 int(a_data[2])). \
+                weekday()
+            index_for_new_dataset_column += 1
 
+            # for i in range(26, 31):
+            #     temp = dog_data[:, i]
+            #     temp = np.array(temp).astype(np.float32)
+            #     temp /= np.max(temp)
+            #     dog_data[:, i] = temp
 
             index_for_new_dataset_row += 1
-            pass
-
+        pass
 
     print(new_dataset[:10])
     return None
-
     counter = 0
     for i in dog_data[:, :]:
         if "Female" in i[5]:
@@ -196,30 +218,6 @@ def pre_processing(dataset):
             dog_data[counter, indices["Working"]] = 0
 
         counter += 1
-    # %% Intake date processing
-    dog_data = np.hstack((dog_data, np.ones((dog_data.shape[0], 5), int)))
-    # %%
-    date_array = np.core.defchararray.split(dog_data[:, 2], "-")
-    counter = 0
-    for date in date_array:
-        dog_data[counter, dog_data.shape[1] - 5] = date[0]  # Year
-        dog_data[counter, dog_data.shape[1] - 4] = date[1]  # month
-        dog_data[counter, dog_data.shape[1] - 3] = date[2].split(" ")[0]  # day
-        dog_data[counter, dog_data.shape[1] - 2] = date[2].split(" ")[1].split(":")[0]  # hour
-        dog_data[counter, dog_data.shape[1] - 1] = datetime.datetime(
-            np.int(date[0]), np.int(date[1]), np.int(date[2].split(" ")[0])
-        ).weekday()
-        counter += 1
-    for i in range(26, 31):
-        temp = dog_data[:, i]
-        temp = np.array(temp).astype(np.float32)
-        temp /= np.max(temp)
-        dog_data[:, i] = temp
-
-    # %%Deleting unwanted collums from the dataset,
-    # and preparing the final dataset to be fed to the network.
-
-    dog_data = np.delete(dog_data, slice(0, 9), 1)
 
     return dog_data, integer_encoded_dog
 
