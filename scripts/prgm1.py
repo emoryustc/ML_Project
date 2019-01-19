@@ -12,7 +12,7 @@ def pre_processing(dataset):
     :return:
     """
     dog_count = np.count_nonzero(dataset[:, 5] == 'Dog')
-    new_dataset = np.zeros((dog_count, 29))
+    new_dataset = np.zeros((dog_count, 36))
     new_outcome = np.zeros((dog_count, 1))
 
     outcome_vector = {'Adoption': 16, 'Died': 8, 'Euthanasia': 4, 'Return_to_owner': 2, 'Transfer': 1}
@@ -33,6 +33,7 @@ def pre_processing(dataset):
     indices_breeds = {"Herding": 0, 'Hound': 1, 'Mix': 2, 'Non-Sporting': 3,
                       'Pit Bull': 4, 'Sporting': 5, 'Terrier': 6, 'Toy': 7,
                       'Unknown': 8, 'Working': 9}
+    indices_pattern = {'Merle': 0, 'Tabby': 1, 'Tick': 2, 'Brindle': 3, 'Tricolor': 4, 'Tiger': 5, 'Smoke': 6}
 
     index_for_new_dataset_row = 0
 
@@ -169,13 +170,19 @@ def pre_processing(dataset):
                 new_dataset[index_for_new_dataset_row, index_for_new_dataset_column] = 1
             index_for_new_dataset_column += 1
 
+            # 29-35 offset
+            for feature in features:
+                if feature in indices_pattern.keys():
+                    new_dataset[index_for_new_dataset_row, index_for_new_dataset_column + indices_pattern[feature]] = 1
+            index_for_new_dataset_column += 7
+
             # Create Arjun's outcome file
             new_outcome[index_for_new_dataset_row] = outcome_vector[dataset[i, 3]]
 
             # Row count ++
             index_for_new_dataset_row += 1
 
-    # print(new_dataset[:, 21:29][:30])
+    # print(new_dataset[:, 30:36][30:60])
     # print(len(new_outcome))
     return new_dataset, new_outcome
 
@@ -183,5 +190,5 @@ def pre_processing(dataset):
 if __name__ == '__main__':
     dataset = np.loadtxt('../dataset/train.csv', dtype=str, delimiter=",")
     new_dataset, new_outcome = pre_processing(dataset)
-    np.save("dataset1.npy", new_dataset)
-    np.save("outcome1.npy", new_outcome)
+    np.save("dataset2.npy", new_dataset)
+    np.save("outcome2.npy", new_outcome)
