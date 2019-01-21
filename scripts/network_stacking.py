@@ -9,6 +9,7 @@ import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.model_selection import train_test_split
 from scripts import prgm1
 import pandas as pd
 import xgboost as xgb
@@ -20,15 +21,16 @@ dataset,outcome = prgm1.pre_processing(dataset)
 np.save("/home/arjun/PycharmProjects/ML_proj/scripts/dataset.npy", dataset)
 np.save("/home/arjun/PycharmProjects/ML_proj/scripts/outcome.npy", outcome)
 # %%
-dataset = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/dataset.npy")
-outcome = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/outcome.npy")
+dataset = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/dataset1.npy")
+outcome = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/outcome1.npy")
 # %%
-
-partition = np.int(np.round(0.8*dataset.shape[0]))
-x_train = dataset[0:partition,:]
-x_test = dataset[partition:,:]
-y_test = np.array(outcome[partition:])
-y_train = np.array(outcome[0:partition])
+#
+# partition = np.int(np.round(0.8*dataset.shape[0]))
+# x_train = dataset[0:partition,:]
+# x_test = dataset[partition:,:]
+# y_test = np.array(outcome[partition:])
+# y_train = np.array(outcome[0:partition])
+x_train, x_test, y_train, y_test = train_test_split(dataset, outcome, test_size=0.33, random_state=42)
 
 # %%
 def Stacking(model,train,y,test,n_fold):

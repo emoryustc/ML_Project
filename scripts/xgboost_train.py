@@ -5,13 +5,14 @@ from scipy.stats import randint as sp_randint
 from scipy.stats import uniform as sp_uniform
 import numpy as np
 import pickle
+from sklearn.model_selection import train_test_split
 
-x = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/dataset.npy")
-y = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/outcome.npy")
+x = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/dataset1.npy")
+y = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/outcome1.npy")
 
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=1)
 
-
-n_iter = 1000
+n_iter = 5
 k_fold = 5
 cv = StratifiedKFold(n_splits=k_fold,shuffle=True)
 
@@ -31,7 +32,7 @@ param_grid = {'max_depth': sp_randint(1, 90),
               'n_estimators': sp_randint(50, 200)}
 
 search_GB = RandomizedSearchCV(GB,param_grid,\
-               n_iter=n_iter,cv=cv,verbose=True).fit(x,y)
+               n_iter=n_iter,cv=cv,verbose=True).fit(X_train,y_train)
 print (search_GB.cv_results_)
 print (' ', search_GB.best_score_)
 print(' ', search_GB.best_params_)
