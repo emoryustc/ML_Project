@@ -6,7 +6,7 @@ mla = pd.read_pickle('./comparison.pkl')
 mla = mla.drop(['MLA Time', 'MLA Test Accuracy 3*STD', 'MLA Parameters'], axis=1)
 mla = mla.rename(index=str, columns={'MLA Name': 'Name', 'MLA Test Accuracy Mean': 'Test Accuracy',
                                      'MLA Train Accuracy Mean': 'Train Accuracy'})
-# mla = mla.iloc[0:0]
+mla = mla.iloc[0:0]
 
 mla = mla.append({'Name': 'NeuralNetwork(1 layer)', 'Test Accuracy': 0.516, 'Train Accuracy': 0.513},
                  ignore_index=True)
@@ -27,9 +27,11 @@ mla = mla.append({'Name': 'NeuralNetwork(4 layers, auto-encoder)', 'Test Accurac
 mla = mla.sort_values(by=['Test Accuracy'])
 print(mla)
 
-mla.plot.barh(x='Name', rot=0)
+ax = mla.plot.barh(x='Name', rot=0)
+# plt.legend(loc='top left', bbox_to_anchor=(1.0, 0.5))
+ax.set_xlim(0, 1)
 plt.grid(zorder=0)
-plt.savefig('./comparison.png', format='png', dpi=600, bbox_inches='tight')
+plt.savefig('./neural_network.png', format='png', dpi=600, bbox_inches='tight')
 # plt.show()
 # print(mla.dtypes)
 
