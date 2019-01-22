@@ -1,4 +1,4 @@
-Accuracy:
+Accuracy:                   dataset         dataset1
 
 Random forest:              51%
 SVM:                        50%
@@ -7,11 +7,12 @@ KNN:                        45%
 XGB:                        53%
 Bagging with RF:            51%
 Bagging with XGB:           55%
-1 layer NN:                 49%
-2 layer NN:                 52%
-3 layer NN:                 52.5%
-4 layer NN:                 52.5%
-5 layer NN:                 52.5%
-7 layer NN:                 53%
-10 layer NN:                47%                 over-fitting
+1 layer NN:                 49%             51.3%       51.6%
+2 layer NN:                 52%             55.0%       54.0%
+3 layer NN:                 52.5%           55.5%       55.1%
+4 layer NN:                 52.5%           55.2%       55.1%
+5 layer NN:                 52.5%           55.9%       56.2%
+7 layer NN:                 53%             55.7%       56.5%
+8 layer NN:                 -               54.7%       45.9%
+10 layer NN:                47%
 10 layer NN (3 dropout):    23%

@@ -10,7 +10,7 @@ value_data = np.load('outcome_ohv_r5_1.npy')
 input_dim = train_data.shape[1]
 output_dim = 5
 batch_size = 256
-nb_epoch = 200
+nb_epoch = 100
 
 
 def create_network_0():
@@ -179,6 +179,28 @@ def create_network_9():
     return model
 
 
+def create_network_10():
+    """
+    Create simple network
+
+    :return:
+    """
+    model = Sequential()
+    model.add(Dense(128, input_dim=input_dim, activation=tf.nn.relu))
+    model.add(Dense(256, input_dim=128, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=256, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=512, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=512, activation=tf.nn.relu))
+    model.add(Dense(512, input_dim=512, activation=tf.nn.relu))
+    model.add(Dense(1024, input_dim=512, activation=tf.nn.relu))
+    model.add(Dense(1024, input_dim=1024, activation=tf.nn.relu))
+    model.add(Dense(1024, input_dim=1024, activation=tf.nn.relu))
+    model.add(Dense(1024, input_dim=1024, activation=tf.nn.relu))
+    model.add(Dense(output_dim, input_dim=1024, activation=tf.nn.softmax))
+    model.summary()
+    return model
+
+
 def train_model(model):
     """
     Train the network
@@ -204,6 +226,6 @@ def evaluate_model(model):
 
 
 if __name__ == '__main__':
-    my_model = create_network_9()
+    my_model = create_network_10()
     train_model(my_model)
     evaluate_model(my_model)
