@@ -16,3 +16,4 @@ Bagging with XGB:           55%
 8 layer NN:                 -               54.7%       45.9%
 10 layer NN:                47%
 10 layer NN (3 dropout):    23%
+autoencoder & 3 layers NN:  52.6%
