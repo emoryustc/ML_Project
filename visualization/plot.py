@@ -6,6 +6,7 @@ mla = pd.read_pickle('./comparison.pkl')
 mla = mla.drop(['MLA Time', 'MLA Test Accuracy 3*STD', 'MLA Parameters'], axis=1)
 mla = mla.rename(index=str, columns={'MLA Name': 'Name', 'MLA Test Accuracy Mean': 'Test Accuracy',
                                      'MLA Train Accuracy Mean': 'Train Accuracy'})
+# mla = mla.iloc[0:0]
 
 mla = mla.append({'Name': 'NeuralNetwork(1 layer)', 'Test Accuracy': 0.516, 'Train Accuracy': 0.513},
                  ignore_index=True)
