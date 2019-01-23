@@ -6,6 +6,8 @@ import xgboost as xgb
 
 dataset = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/dataset.npy")
 outcome = np.load("/home/arjun/PycharmProjects/ML_proj/scripts/outcome.npy")
+
+
 # %%
 def ceate_feature_map(features):
     outfile = open('xgb.fmap', 'w')
@@ -15,6 +17,8 @@ def ceate_feature_map(features):
         i = i + 1
 
     outfile.close()
+
+
 features = ["Male/Female",
             "Neutered/Intact",
             "Single/Multi-color",
@@ -40,9 +44,9 @@ features = ["Male/Female",
 ceate_feature_map(features)
 dtrain = xgb.DMatrix(dataset, label=outcome)
 num_rounds = 50
-xgb_params={"colsample_bytree": 0.39258925829065067,
- "learning_rate": 0.49227635408236803, "max_depth": 65, "n_estimators":168, "nthread":8,
- "reg_alpha": 17.7827941, "subsample":0.93124726513080813}
+xgb_params = {"colsample_bytree": 0.39258925829065067,
+              "learning_rate": 0.49227635408236803, "max_depth": 65, "n_estimators": 168, "nthread": 8,
+              "reg_alpha": 17.7827941, "subsample": 0.93124726513080813}
 gbdt = xgb.train(xgb_params, dtrain, num_rounds)
 
 importance = gbdt.get_fscore(fmap='xgb.fmap')
@@ -55,5 +59,5 @@ df.plot()
 df.plot(kind='barh', x='feature', y='fscore', legend=False, figsize=(6, 10))
 plt.title('XGBoost Feature Importance')
 plt.xlabel('relative importance')
-plt.gcf().savefig('feature_importance_xgb.png')
+plt.gcf().savefig('feature_importance_xgb.png', bbox_inches='tight')
 plt.show()
