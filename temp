@@ -1,0 +1,66 @@
+{'colsample_bytree': 0.39258925829065067, 'learning_rate': 0.49227635408236803, 'max_depth': 65, 'missing': nan, 'n_estimators': 168, 'nthread': 8, 'objective': 'multi:softprob', 'reg_alpha': 17.7827941, 'subsample': 0.93124726513080813}
+
+
+Things to do:
+1)incorporate date things. done!!
+2)voting system with bagging doing it now!!
+3)implement the feature importance graph
+
+
+
+1 -> male/female
+2 -> neutered / not
+3 -> single/multi color
+4 ->name present /not
+5 ->length of name normalized
+6 ->Frequency of name normalized
+7 ->Age of the animal in days normalized
+"Herding": 8, 
+'Hound': 9,
+'Mix': 10,
+'Non-Sporting': 11,
+'Pit Bull': 12,
+'Sporting': 13,
+'Terrier': 14,
+'Toy': 15,
+'Unknown': 16,
+'Working': 17
+
+Improvements after parameter tuning
+catboost: 0.582200564247 0.59092074891 
+(iterations=500, depth=10,
+                            learning_rate=0.1,
+                            loss_function='MultiClass'
+                            )
+xgboost: 0.579379328033 0.583007374158 
+({'colsample_bytree': 0.38080923653441978, 'learning_rate': 0.13766708758980395, 'max_depth': 13, 'missing': nan, 'n_estimators': 72, 'nthread': 8, 'objective': 'multi:softprob', 'reg_alpha': 1.77827941, 'subsample': 0.98148897078432862}
+xbm: 0.581944088228 
+Logistic regression 0.543216209284 0.550945815967 {'penalty': 'l1', 'class_weight': ''}
+linear discriminant analysis 0.543472685304 0.551330554665
+  {'solver': 'lsqr', 'shrinkage': 'auto', 'n_components': 0}
+
+
+Stacking: 0.575869438508
+Scores from Model1:: 0.553137750146
+Scores from Model2:: 0.573732271226
+Scores from Model3:: 0.576646590247
+Scores from Model4:: 0.55041771906
+
+Bagging results
+xgb : 0.577327519877
+catboost:: 0.579892280072
+Accuracy from xbm:: 0.571685047448
+Accuracy from LogisticRegression: 0.544755065401
+Accuracy from LDA: 0.256476019492
+
+Blending
+0.572760831552
+
+Max voting
+0.581115212745
+
+
+
+
+
+
