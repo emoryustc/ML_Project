@@ -18,9 +18,24 @@ model= BaggingClassifier(GradientBoostingClassifier(n_estimators=100, learning_r
 model.fit(x_train, y_train)
 print(model.score(x_test,y_test))
 
-# %% catboost
+# %% catboost best
 
-model = CatBoostClassifier(iterations=600, depth=11, learning_rate=0.1,loss_function='MultiClass')
+model = CatBoostClassifier(
+    iterations=500, depth=10,
+                           learning_rate=0.1,
+                           loss_function='MultiClass',
+                           # bagging_temperature=2,
+                           # l2_leaf_reg=4)
+                           )
 model.fit(pd.DataFrame(x_train),pd.DataFrame(y_train),
-          eval_set=(pd.DataFrame(x_val),pd.DataFrame(y_val)))
+          eval_set=(pd.DataFrame(x_val),pd.DataFrame(y_val)),plot=True)
+print(model.score(x_test,y_test))
+
+# %%
+model = xgb.XGBClassifier()
+model.fit(x_train,y_train)
+print (model.score(x_test,y_test))
+# %%
+model = GradientBoostingClassifier()
+model.fit(x_train,y_train)
 print(model.score(x_test,y_test))
